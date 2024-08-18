@@ -3,13 +3,12 @@
  */
 package at.fhv.lka2.checker
 
-import kotlin.test.Test
-import kotlin.test.assertNotNull
-import kotlin.test.fail
+import io.kotest.core.spec.style.FreeSpec
+import io.kotest.matchers.nulls.shouldNotBeNull
 
-class AppTest {
-    @Test fun appHasAGreeting() {
+class AppTest : FreeSpec({
+    "app has a greeting" {
         val classUnderTest = App()
-        assertNotNull(classUnderTest.greeting, "app should have a greeting")
+        classUnderTest.greeting.shouldNotBeNull()
     }
-}
+})
