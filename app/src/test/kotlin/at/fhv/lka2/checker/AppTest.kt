@@ -4,11 +4,7 @@
 package at.fhv.lka2.checker
 
 import io.kotest.core.spec.style.FreeSpec
-import io.kotest.matchers.nulls.shouldNotBeNull
 
 class AppTest : FreeSpec({
-    "app has a greeting" {
-        val classUnderTest = App()
-        classUnderTest.greeting.shouldNotBeNull()
-    }
+
 })

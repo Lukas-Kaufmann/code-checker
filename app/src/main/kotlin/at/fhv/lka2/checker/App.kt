@@ -3,13 +3,41 @@
  */
 package at.fhv.lka2.checker
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
+import at.fhv.lka2.checker.model.Violation
+import java.io.File
+import kotlin.system.exitProcess
+
+fun analyzeDirectory(directory: File): List<Violation> {
+    return directory.walk()
+        .filter { it.isFile && it.extension == "java" }
+        .flatMap { analyzeFile(it) }.toList()
 }
 
-fun main() {
-    println(App().greeting)
+private fun analyzeFile(file: File): List<Violation> {
+    return emptyList()
+    TODO()
+}
+
+fun main(args: Array<String>) {
+    val directory = if (args.isNotEmpty()) {
+        File(args[0])
+    } else {
+        File(".")
+    }
+
+    if (!directory.exists() || !directory.isDirectory) {
+        println("Error: Invalid directory specified.")
+        exitProcess(1)
+    }
+
+    val violations = analyzeDirectory(directory)
+
+    if (violations.isEmpty()) {
+        println("Succeeded! No Violations found")
+        exitProcess(0)
+    } else {
+        println("Failed!")
+        //TODO output violations
+        exitProcess(1)
+    }
 }
