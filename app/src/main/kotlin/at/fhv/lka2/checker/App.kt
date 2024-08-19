@@ -1,39 +1,20 @@
 package at.fhv.lka2.checker
 
+import at.fhv.lka2.checker.model.Rule
 import at.fhv.lka2.checker.model.Violation
+import at.fhv.lka2.checker.rules.FieldPatternRule
 import at.fhv.lka2.checker.rules.InvalidSyntaxRule
 import at.fhv.lka2.checker.rules.MethodLengthRule
-import com.github.javaparser.JavaParser
 import java.io.File
 import kotlin.system.exitProcess
 
-fun analyzeDirectory(directory: File): List<Violation> {
+fun analyzeDirectory(directory: File, rules: Collection<Rule>): List<Violation> {
     return directory.walk()
         .filter { it.isFile && it.extension == "java" }
-        .flatMap { analyzeFile(it) }.toList()
+        .flatMap { analyzeFile(it, rules) }.toList()
 }
 
-private fun analyzeFile(file: File): List<Violation> {
-    val javaParser = JavaParser()
-    val violations = mutableListOf<Violation>()
-
-    val result = javaParser.parse(file)
-    if (result.isSuccessful) {
-        val cu = result.result.get()
-        val visitor = MethodLengthRule()
-        visitor.visit(cu, violations)
-    } else {
-        violations.add(
-            Violation(
-                InvalidSyntaxRule(),
-                Violation.Location(file, 0),
-                "Failed to parse file: ${result.problems}"
-            )
-        )
-    }
-
-    return violations
-}
+private fun analyzeFile(file: File, rules: Collection<Rule>): List<Violation> = rules.flatMap { it.check(file) }
 
 fun main(args: Array<String>) {
     val directory = if (args.isNotEmpty()) {
@@ -47,7 +28,10 @@ fun main(args: Array<String>) {
         exitProcess(1)
     }
 
-    val violations = analyzeDirectory(directory)
+    //TODO get by reflection, plus filter basic config enabled
+    val rules = listOf(InvalidSyntaxRule(), MethodLengthRule(), FieldPatternRule())
+
+    val violations = analyzeDirectory(directory, rules)
 
     if (violations.isEmpty()) {
         println("Succeeded! No Violations found")
