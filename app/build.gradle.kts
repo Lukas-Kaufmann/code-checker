@@ -13,6 +13,7 @@ dependencies {
 
     testImplementation(libs.junit.jupiter.engine)
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
     testImplementation("io.kotest:kotest-framework-api:5.9.1")
     testImplementation("io.kotest:kotest-assertions-core:5.9.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -26,6 +27,10 @@ java {
 
 application {
     mainClass = "at.fhv.lka2.checker.AppKt"
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 tasks.named<Test>("test") {

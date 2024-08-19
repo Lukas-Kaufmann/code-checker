@@ -7,10 +7,12 @@ import java.io.File
 
 class FieldPatternRule : Rule() {
 
+    private val pattern = "^[a-z][a-zA-Z0-9]*$"
+
     override fun visit(field: FieldDeclaration, violations: MutableList<Violation>) {
         field.variables.forEach { variable ->
             val name = variable.nameAsString
-            if (!name.matches(Regex("^[a-z][a-zA-Z0-9]*$"))) {
+            if (!name.matches(Regex(pattern))) {
                 violations.add(
                     Violation(
                         this,
@@ -18,7 +20,7 @@ class FieldPatternRule : Rule() {
                             File(field.findCompilationUnit().get().storage.get().fileName),
                             field.begin.get().line
                         ),
-                        "Class variable '$name' does not follow camelCase convention"
+                        "Class variable '$name' does not follow Pattern: $pattern"
                     )
                 )
             }
