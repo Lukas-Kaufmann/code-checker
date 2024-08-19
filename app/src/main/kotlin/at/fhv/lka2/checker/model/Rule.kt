@@ -1,5 +1,5 @@
 package at.fhv.lka2.checker.model
 
-interface Rule {
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter
 
-}
+abstract class Rule : VoidVisitorAdapter<MutableList<Violation>>()

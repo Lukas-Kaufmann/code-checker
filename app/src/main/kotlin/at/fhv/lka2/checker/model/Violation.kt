@@ -1,5 +1,7 @@
 package at.fhv.lka2.checker.model
 
-data class Violation(val rule: Rule, val location: Location) {
-    data class Location(val file: String, val line: Int)
+import java.io.File
+
+data class Violation(val rule: Rule, val location: Location, val message: String?) {
+    data class Location(val file: File, val line: Int)
 }

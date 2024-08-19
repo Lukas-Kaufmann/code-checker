@@ -11,4 +11,4 @@ plugins {
 }
 
 rootProject.name = "code-checker"
-include("app")
+include("app", "violations")
