@@ -1,0 +1,5 @@
+fieldPattern:
+  enabled: true
+  pattern: ^[a-z][a-zA-Z0-9]*$
+methodLength:
+  enabled: true
