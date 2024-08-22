@@ -1,11 +1,12 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-
+    kotlin("jvm")
+    id("org.jetbrains.dokka") apply true
     application
 }
 
-repositories {
-    mavenCentral()
+tasks.dokkaHtml {
+    moduleName = "app"
+    outputDirectory = File("$buildDir/docs/dokka")
 }
 
 dependencies {
