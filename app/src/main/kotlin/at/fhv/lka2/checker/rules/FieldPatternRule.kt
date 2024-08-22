@@ -1,13 +1,13 @@
 package at.fhv.lka2.checker.rules
 
-import at.fhv.lka2.checker.model.Rule
+import at.fhv.lka2.checker.model.JavaRule
 import at.fhv.lka2.checker.config.RuleConfig
 import at.fhv.lka2.checker.model.Violation
 import at.fhv.lka2.checker.rules.FieldPatternRule.FieldPatternRuleConfig
 import com.github.javaparser.ast.body.FieldDeclaration
 import java.io.File
 
-class FieldPatternRule(config: FieldPatternRuleConfig = FieldPatternRuleConfig()) : Rule<FieldPatternRuleConfig>(config) {
+class FieldPatternRule(config: FieldPatternRuleConfig = FieldPatternRuleConfig()) : JavaRule<FieldPatternRuleConfig>(config) {
 
     data class FieldPatternRuleConfig(
         override val enabled: Boolean = true,

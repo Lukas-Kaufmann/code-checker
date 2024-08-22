@@ -1,18 +1,18 @@
 package at.fhv.lka2.checker
 
 import at.fhv.lka2.checker.config.RuleLoader
-import at.fhv.lka2.checker.model.Rule
+import at.fhv.lka2.checker.model.JavaRule
 import at.fhv.lka2.checker.model.Violation
 import java.io.File
 import kotlin.system.exitProcess
 
-fun analyzeDirectory(directory: File, rules: Collection<Rule<*>>): List<Violation> {
+fun analyzeDirectory(directory: File, rules: Collection<JavaRule<*>>): List<Violation> {
     return directory.walk()
-        .filter { it.isFile && it.extension == "java" }
+        .filter { it.isFile && it.extension.lowercase() in listOf("java", "c", "h") }
         .flatMap { analyzeFile(it, rules) }.toList()
 }
 
-private fun analyzeFile(file: File, rules: Collection<Rule<*>>): List<Violation> =
+private fun analyzeFile(file: File, rules: Collection<JavaRule<*>>): List<Violation> =
     rules.flatMap { it.check(file) }
 
 fun main(args: Array<String>) {

@@ -1,13 +1,13 @@
 package at.fhv.lka2.checker.rules
 
 import at.fhv.lka2.checker.config.RuleConfig
-import at.fhv.lka2.checker.model.Rule
+import at.fhv.lka2.checker.model.JavaRule
 import at.fhv.lka2.checker.model.Violation
 import at.fhv.lka2.checker.rules.MethodLengthRule.MethodLengthRuleConfig
 import com.github.javaparser.ast.body.MethodDeclaration
 import java.io.File
 
-class MethodLengthRule(config: MethodLengthRuleConfig = MethodLengthRuleConfig()) : Rule<MethodLengthRuleConfig>(config) {
+class MethodLengthRule(config: MethodLengthRuleConfig = MethodLengthRuleConfig()) : JavaRule<MethodLengthRuleConfig>(config) {
 
     data class MethodLengthRuleConfig(
         override val enabled: Boolean = true,

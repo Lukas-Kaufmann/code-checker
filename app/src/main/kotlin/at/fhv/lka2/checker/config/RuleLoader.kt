@@ -1,7 +1,7 @@
 package at.fhv.lka2.checker.config
 
 import at.fhv.lka2.checker.lowerCaseFirstLetter
-import at.fhv.lka2.checker.model.Rule
+import at.fhv.lka2.checker.model.JavaRule
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -33,8 +33,8 @@ object RuleLoader {
         return mapper.readValue(File(filePath))
     }
 
-    fun loadRules(): List<Rule<*>> {
-        val allRules = getAllSubclassesOf(Rule::class)
+    fun loadRules(): List<JavaRule<*>> {
+        val allRules = getAllSubclassesOf(JavaRule::class)
 
         val path = System.getenv(CONFIG_PATH_ENV)?.takeIf { it.isNotBlank() } ?: DEFAULT_CONFIG_PATH
         val configs = loadConfig(path)
@@ -43,12 +43,12 @@ object RuleLoader {
             val configKey = ruleClass.simpleName!!.removeSuffix("Rule").lowerCaseFirstLetter()
 
             val type =
-                ruleClass.supertypes.first { it.classifier == Rule::class }.arguments.first().type!!.classifier as KClass<*>
+                ruleClass.supertypes.first { it.classifier == JavaRule::class }.arguments.first().type!!.classifier as KClass<*>
 
             val ruleConfig =
                 configs[configKey]?.let { mapper.convertValue(it, type.java) }
             val constructor = ruleClass.constructors.first()
-            constructor.call(ruleConfig) as Rule<*>
+            constructor.call(ruleConfig) as JavaRule<*>
         }.filter { it.isEnabled() }
     }
 }
