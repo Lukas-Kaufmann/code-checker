@@ -1,3 +1,5 @@
+import java.net.URL
+
 plugins {
     kotlin("jvm")
     id("org.jetbrains.dokka") apply true
@@ -6,7 +8,13 @@ plugins {
 
 tasks.dokkaHtml {
     moduleName = "app"
-    outputDirectory = File("$buildDir/docs/dokka")
+    dokkaSourceSets.named("main").configure {
+        sourceLink {
+            localDirectory.set(projectDir.resolve("src"))
+            remoteUrl.set(URL("https://github.com/Lukas-Kaufmann/code-checker/tree/main/app/src"))
+            remoteLineSuffix.set("#L")
+        }
+    }
 }
 
 dependencies {
