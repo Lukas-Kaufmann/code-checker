@@ -15,6 +15,8 @@ tasks.dokkaHtml {
             remoteLineSuffix.set("#L")
         }
     }
+
+    suppressInheritedMembers.set(true)
 }
 
 dependencies {

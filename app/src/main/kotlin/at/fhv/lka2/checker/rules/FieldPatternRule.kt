@@ -7,8 +7,54 @@ import at.fhv.lka2.checker.rules.FieldPatternRule.FieldPatternRuleConfig
 import com.github.javaparser.ast.body.FieldDeclaration
 import java.io.File
 
+/**
+ * FieldPatternRule: Enforces a specific naming pattern for class fields.
+ *
+ * This rule checks if class field names conform to a specified regular expression pattern.
+ * By default, it enforces the pattern "^[a-z][a-zA-Z0-9]*$", which means:
+ * - The field name must start with a lowercase letter
+ * - It can be followed by any number of letters (uppercase or lowercase) or digits
+ *
+ * Examples of compliant field names:
+ * - userName
+ * - age
+ * - firstName123
+ * - x
+ *
+ * Examples of non-compliant field names:
+ * - UserName (starts with uppercase)
+ * - _age (starts with underscore)
+ * - first_name (contains underscore)
+ * - 123field (starts with a number)
+ *
+ * Example of compliant code:
+ * ```java
+ * class User {
+ *     private String userName;
+ *     private int age;
+ *     protected List<String> hobbies;
+ * }
+ * ```
+ *
+ * Example of code with violations:
+ * ```java
+ * class User {
+ *     private String UserName; // Violation: Starts with uppercase
+ *     private int _age; // Violation: Starts with underscore
+ *     protected List<String> user_hobbies; // Violation: Contains underscore
+ * }
+ * ```
+ *
+ * @property config The [FieldPatternRuleConfig] for this rule.
+ */
 class FieldPatternRule(config: FieldPatternRuleConfig = FieldPatternRuleConfig()) : JavaRule<FieldPatternRuleConfig>(config) {
 
+    /**
+     * Configuration for the [FieldPatternRule].
+     *
+     * @property enabled Whether this rule is active (default: true)
+     * @property pattern The regex pattern to match field names against (default: "^[a-z][a-zA-Z0-9]*$")
+     */
     data class FieldPatternRuleConfig(
         override val enabled: Boolean = true,
         val pattern: String = "^[a-z][a-zA-Z0-9]*$"
