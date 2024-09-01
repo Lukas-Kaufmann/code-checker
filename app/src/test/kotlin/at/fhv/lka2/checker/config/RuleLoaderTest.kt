@@ -1,7 +1,7 @@
 package at.fhv.lka2.checker.config
 
-import at.fhv.lka2.checker.rules.FieldPatternRule
-import at.fhv.lka2.checker.rules.MethodLengthRule
+import at.fhv.lka2.checker.rules.FieldPatternJavaRule
+import at.fhv.lka2.checker.rules.MethodLengthJavaRule
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldContainAll
 
@@ -10,8 +10,8 @@ class RuleLoaderTest : FreeSpec({
 
         "should load rules" {
             RuleLoader.loadRules().map { it::class } shouldContainAll listOf(
-                FieldPatternRule::class,
-                MethodLengthRule::class
+                FieldPatternJavaRule::class,
+                MethodLengthJavaRule::class
             )
         }
 

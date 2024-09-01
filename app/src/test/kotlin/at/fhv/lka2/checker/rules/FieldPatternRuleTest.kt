@@ -9,7 +9,7 @@ import kotlin.io.path.writeText
 
 class FieldPatternRuleTest : FreeSpec({
 
-    val rule = FieldPatternRule()
+    val rule = FieldPatternJavaRule()
 
     fun analyzeCode(code: String): List<Violation> {
         val file = kotlin.io.path.createTempFile()

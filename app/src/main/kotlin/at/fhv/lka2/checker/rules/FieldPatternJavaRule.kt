@@ -3,7 +3,7 @@ package at.fhv.lka2.checker.rules
 import at.fhv.lka2.checker.model.JavaRule
 import at.fhv.lka2.checker.config.RuleConfig
 import at.fhv.lka2.checker.model.Violation
-import at.fhv.lka2.checker.rules.FieldPatternRule.FieldPatternRuleConfig
+import at.fhv.lka2.checker.rules.FieldPatternJavaRule.FieldPatternRuleConfig
 import com.github.javaparser.ast.body.FieldDeclaration
 import java.io.File
 
@@ -47,10 +47,10 @@ import java.io.File
  *
  * @property config The [FieldPatternRuleConfig] for this rule.
  */
-class FieldPatternRule(config: FieldPatternRuleConfig = FieldPatternRuleConfig()) : JavaRule<FieldPatternRuleConfig>(config) {
+class FieldPatternJavaRule(config: FieldPatternRuleConfig = FieldPatternRuleConfig()) : JavaRule<FieldPatternRuleConfig>(config) {
 
     /**
-     * Configuration for the [FieldPatternRule].
+     * Configuration for the [FieldPatternJavaRule].
      *
      * @property enabled Whether this rule is active (default: true)
      * @property pattern The regex pattern to match field names against (default: "^[a-z][a-zA-Z0-9]*$")

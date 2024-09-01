@@ -3,7 +3,7 @@ package at.fhv.lka2.checker.rules
 import at.fhv.lka2.checker.config.RuleConfig
 import at.fhv.lka2.checker.model.JavaRule
 import at.fhv.lka2.checker.model.Violation
-import at.fhv.lka2.checker.rules.MethodLengthRule.MethodLengthRuleConfig
+import at.fhv.lka2.checker.rules.MethodLengthJavaRule.MethodLengthRuleConfig
 import com.github.javaparser.ast.body.MethodDeclaration
 import java.io.File
 
@@ -65,7 +65,8 @@ import java.io.File
  *
  * @property config The [MethodLengthRuleConfig] for this rule
  */
-class MethodLengthRule(config: MethodLengthRuleConfig = MethodLengthRuleConfig()) : JavaRule<MethodLengthRuleConfig>(config) {
+class MethodLengthJavaRule(config: MethodLengthRuleConfig = MethodLengthRuleConfig()) :
+    JavaRule<MethodLengthRuleConfig>(config) {
 
     /**
      * Configuration for the [MethodLengthRuleConfig].
@@ -83,7 +84,7 @@ class MethodLengthRule(config: MethodLengthRuleConfig = MethodLengthRuleConfig()
             violations.add(
                 Violation(
                     Violation.Location(File(n.findCompilationUnit().get().storage.get().fileName), n.begin.get().line),
-                    "Method '${n.nameAsString}' is too long (${n.body.get().statements.size} lines)"
+                    "Method '${n.nameAsString}' is too long (${n.body.get().statements.size} lines). Large methods indicate a high complexity which makes methods hard to understand. Try splitting it into smaller methods."
                 )
             )
         }
