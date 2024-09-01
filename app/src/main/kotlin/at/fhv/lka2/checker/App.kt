@@ -36,7 +36,7 @@ fun main(args: Array<String>) {
     } else {
         println("Failed!")
         violations.forEach { violation ->
-            println("${violation.location.file.name}:${violation.location.line} - ${violation.message}")
+            println("${violation.location.file.absolutePath}:${violation.location.line} - ${violation.message}")
         }
         //TODO html output
         exitProcess(1)
