@@ -35,44 +35,30 @@ object RuleLoader {
         return mapper.readValue(File(filePath))
     }
 
+    private inline fun <reified T : Any> configureRules(configs: Map<String, Any>): List<T> {
+        return getAllSubclassesOf(T::class).map { subclass ->
+            val configKey = subclass.simpleName!!.removeSuffix(T::class.simpleName.toString()).lowerCaseFirstLetter()
+            val ruleType = subclass.supertypes
+                .firstOrNull { it.classifier == T::class }
+                ?.arguments?.firstOrNull()?.type?.classifier as KClass<*>
+
+            val ruleConfig = configs[configKey]?.let { mapper.convertValue(it, ruleType.java) }
+            val constructor = subclass.constructors.first()
+
+            if (ruleConfig == null) {
+                constructor.callBy(emptyMap()) as T
+            } else {
+                constructor.call(ruleConfig) as T
+            }
+        }.filter { (it as? Rule<*>)?.isEnabled() == true }
+    }
+
     fun loadRules(): List<Rule<*>> {
         val path = System.getenv(CONFIG_PATH_ENV)?.takeIf { it.isNotBlank() } ?: DEFAULT_CONFIG_PATH
         val configs = loadConfig(path)
 
-        val allJavaRules = getAllSubclassesOf(JavaRule::class)
-        val configuredJavaRules = allJavaRules.map { ruleClass ->
-            val configKey = ruleClass.simpleName!!.removeSuffix("JavaRule").lowerCaseFirstLetter()
-            val javaRule =
-                ruleClass.supertypes.firstOrNull { it.classifier == JavaRule::class }?.arguments?.firstOrNull()?.type?.classifier as KClass<*>
-
-            val ruleConfig =
-                configs[configKey]?.let { mapper.convertValue(it, javaRule.java) }
-            val constructor = ruleClass.constructors.first()
-            if (ruleConfig == null) {
-                //callBy substitutes the missing argument with the default argument
-                constructor.callBy(emptyMap()) as JavaRule<*>
-            } else {
-                constructor.call(ruleConfig) as JavaRule<*>
-            }
-        }.filter { it.isEnabled() }
-
-        val allCRules = getAllSubclassesOf(CRule::class)
-        val configuredCRules = allCRules.map { ruleClass ->
-            val configKey = ruleClass.simpleName!!.removeSuffix("CRule").lowerCaseFirstLetter()
-
-            val cRule =
-                ruleClass.supertypes.firstOrNull { it.classifier == CRule::class }?.arguments?.firstOrNull()?.type?.classifier as KClass<*>
-
-            val ruleConfig =
-                configs[configKey]?.let { mapper.convertValue(it, cRule.java) }
-            val constructor = ruleClass.constructors.first()
-            if (ruleConfig == null) {
-                //callBy substitutes the missing argument with the default argument
-                constructor.callBy(emptyMap()) as CRule<*>
-            } else {
-                constructor.call(ruleConfig) as CRule<*>
-            }
-        }.filter { it.isEnabled() }
-        return configuredJavaRules + configuredCRules
+        val javaRules = configureRules<JavaRule<*>>(configs)
+        val cRules = configureRules<CRule<*>>(configs)
+        return javaRules + cRules
     }
 }
