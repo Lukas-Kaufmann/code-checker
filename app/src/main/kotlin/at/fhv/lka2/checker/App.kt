@@ -35,8 +35,11 @@ fun main(args: Array<String>) {
         exitProcess(0)
     } else {
         println("Failed!")
-        violations.forEach { violation ->
-            println("${violation.location.file.absolutePath}:${violation.location.line} - ${violation.message}")
+        violations.groupBy { it.location.file.absolutePath }.forEach { (path, violations) ->
+            println("$path - ${violations.size} Violations")
+            violations.forEach { violation ->
+                println("\t${violation.message} at ${violation.location.file.absolutePath}:${violation.location.line}")
+            }
         }
         //TODO html output
         exitProcess(1)
