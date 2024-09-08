@@ -26,6 +26,9 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.2")
     implementation("org.reflections:reflections:0.10.2")
 
+    implementation("com.github.mhoffrog.attached:org.eclipse.cdt.core:5.11.0")
+    implementation("org.eclipse.platform:org.eclipse.core.runtime:3.31.100")
+
     testImplementation(libs.junit.jupiter.engine)
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
