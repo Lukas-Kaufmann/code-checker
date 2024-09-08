@@ -10,7 +10,7 @@ import kotlin.system.exitProcess
 fun analyzeDirectory(directory: File, rules: Collection<Rule<*>>): List<Violation> {
     val (javaRules, cRules) = rules.partition { rule -> rule is JavaRule<*> }
     val (javaFiles, cFiles) = directory.walk()
-        .filter { it.isFile && it.extension.lowercase() in listOf("java", "c", "h") }
+        .filter { it.isFile && it.extension.lowercase() in listOf("java", "c", "cpp", "h") }
         .partition { it.extension.lowercase() == "java" }
 
     return javaFiles.flatMap { analyzeFile(it, javaRules) } + cFiles.flatMap { analyzeFile(it, cRules) }
