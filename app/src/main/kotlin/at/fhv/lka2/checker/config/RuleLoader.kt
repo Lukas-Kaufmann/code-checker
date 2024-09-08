@@ -1,7 +1,9 @@
 package at.fhv.lka2.checker.config
 
 import at.fhv.lka2.checker.lowerCaseFirstLetter
+import at.fhv.lka2.checker.model.CRule
 import at.fhv.lka2.checker.model.JavaRule
+import at.fhv.lka2.checker.model.Rule
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -33,22 +35,44 @@ object RuleLoader {
         return mapper.readValue(File(filePath))
     }
 
-    fun loadRules(): List<JavaRule<*>> {
-        val allRules = getAllSubclassesOf(JavaRule::class)
-
+    fun loadRules(): List<Rule<*>> {
         val path = System.getenv(CONFIG_PATH_ENV)?.takeIf { it.isNotBlank() } ?: DEFAULT_CONFIG_PATH
         val configs = loadConfig(path)
 
-        return allRules.map { ruleClass ->
-            val configKey = ruleClass.simpleName!!.removeSuffix("Rule").lowerCaseFirstLetter()
-
-            val type =
-                ruleClass.supertypes.first { it.classifier == JavaRule::class }.arguments.first().type!!.classifier as KClass<*>
+        val allJavaRules = getAllSubclassesOf(JavaRule::class)
+        val configuredJavaRules = allJavaRules.map { ruleClass ->
+            val configKey = ruleClass.simpleName!!.removeSuffix("JavaRule").lowerCaseFirstLetter()
+            val javaRule =
+                ruleClass.supertypes.firstOrNull { it.classifier == JavaRule::class }?.arguments?.firstOrNull()?.type?.classifier as KClass<*>
 
             val ruleConfig =
-                configs[configKey]?.let { mapper.convertValue(it, type.java) }
+                configs[configKey]?.let { mapper.convertValue(it, javaRule.java) }
             val constructor = ruleClass.constructors.first()
-            constructor.call(ruleConfig) as JavaRule<*>
+            if (ruleConfig == null) {
+                //callBy substitutes the missing argument with the default argument
+                constructor.callBy(emptyMap()) as JavaRule<*>
+            } else {
+                constructor.call(ruleConfig) as JavaRule<*>
+            }
         }.filter { it.isEnabled() }
+
+        val allCRules = getAllSubclassesOf(CRule::class)
+        val configuredCRules = allCRules.map { ruleClass ->
+            val configKey = ruleClass.simpleName!!.removeSuffix("CRule").lowerCaseFirstLetter()
+
+            val cRule =
+                ruleClass.supertypes.firstOrNull { it.classifier == CRule::class }?.arguments?.firstOrNull()?.type?.classifier as KClass<*>
+
+            val ruleConfig =
+                configs[configKey]?.let { mapper.convertValue(it, cRule.java) }
+            val constructor = ruleClass.constructors.first()
+            if (ruleConfig == null) {
+                //callBy substitutes the missing argument with the default argument
+                constructor.callBy(emptyMap()) as CRule<*>
+            } else {
+                constructor.call(ruleConfig) as CRule<*>
+            }
+        }.filter { it.isEnabled() }
+        return configuredJavaRules + configuredCRules
     }
 }
