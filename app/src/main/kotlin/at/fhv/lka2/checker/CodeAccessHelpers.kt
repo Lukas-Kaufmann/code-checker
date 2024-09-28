@@ -1,4 +1,4 @@
-package at.fhv.lka2.checker.rules
+package at.fhv.lka2.checker
 
 import com.github.javaparser.Position
 import java.nio.file.Path

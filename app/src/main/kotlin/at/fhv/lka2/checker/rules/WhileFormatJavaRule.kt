@@ -1,9 +1,9 @@
 package at.fhv.lka2.checker.rules
 
 import at.fhv.lka2.checker.config.RuleConfig
+import at.fhv.lka2.checker.getSourceText
 import at.fhv.lka2.checker.model.JavaRule
 import at.fhv.lka2.checker.model.Violation
-import com.github.javaparser.ast.stmt.IfStmt
 import com.github.javaparser.ast.stmt.WhileStmt
 
 data class WhileFormatRuleConfig(override val enabled: Boolean = true) : RuleConfig
