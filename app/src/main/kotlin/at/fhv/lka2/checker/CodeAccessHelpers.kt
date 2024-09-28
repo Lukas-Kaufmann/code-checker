@@ -1,6 +1,7 @@
 package at.fhv.lka2.checker
 
 import com.github.javaparser.Position
+import org.eclipse.cdt.core.dom.ast.IASTNode
 import java.nio.file.Path
 import kotlin.io.path.useLines
 
@@ -18,10 +19,19 @@ fun Path.getSourceText(from: Position, to: Position): String {
                         }
                     }
 
-                    to.line -> line.substring(0, to.column)
+                    to.line -> if(to.column == 1) "" else line.substring(0, to.column)
                     else -> line
                 }
             }
             .joinToString("\n")
     }
+}
+
+fun IASTNode.getSourceText(): String {
+    val file = Path.of(fileLocation.fileName)
+    fileLocation
+    return file.getSourceText(
+        from = Position(fileLocation.startingLineNumber, 1),
+        to = Position(fileLocation.endingLineNumber + 1, 1)
+    ).trim()
 }
