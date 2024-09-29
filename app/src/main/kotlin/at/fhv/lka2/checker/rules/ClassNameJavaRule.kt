@@ -6,13 +6,13 @@ import at.fhv.lka2.checker.model.Violation
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration
 import java.io.File
 
-data class ClassNameJavaRuleConfig(
+data class ClassNameRuleConfig(
     override val enabled: Boolean = true,
     val pattern: Regex = "[A-Z][a-zA-Z]*".toRegex()
 ) : RuleConfig
 
-class ClassNameJavaRule(config: ClassNameJavaRuleConfig = ClassNameJavaRuleConfig()) :
-    JavaRule<ClassNameJavaRuleConfig>(config) {
+class ClassNameJavaRule(config: ClassNameRuleConfig = ClassNameRuleConfig()) :
+    JavaRule<ClassNameRuleConfig>(config) {
 
     override fun visit(`class`: ClassOrInterfaceDeclaration, arg: MutableList<Violation>) {
         if (!`class`.nameAsString.matches(config.pattern)) {
