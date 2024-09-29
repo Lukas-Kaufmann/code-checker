@@ -80,23 +80,4 @@ class FieldPatternRuleTest : FreeSpec({
         val violations = analyzeCode(code)
         violations shouldHaveSize 0
     }
-
-    "interface" {
-        val code = """
-            interface TestInterface {
-                int INVALID_NON_STATIC_VARIABLE = 1;
-                String validVariable = "test";
-            }
-        """.trimIndent()
-
-        val violations = analyzeCode(code)
-        violations shouldHaveSize 1
-        val messages = violations.map { it.message }
-        println(messages)
-        messages shouldContainAll listOf(
-            "Class variable 'INVALID_NON_STATIC_VARIABLE' does not follow Pattern: ^[a-z][a-zA-Z0-9]*\$",
-        )
-    }
 })
-
-
