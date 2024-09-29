@@ -40,3 +40,12 @@ Then the code checker can be used in another project like this:
 code-checker .
 ```
 
+## Documentation of Rules
+
+Generate the documentation of the rules by running
+
+```shell
+./gradlew :app:dokkaHtml
+```
+
+The docs can then be found at [app/build/dokka/html/](app/build/dokka/html/index.html)
