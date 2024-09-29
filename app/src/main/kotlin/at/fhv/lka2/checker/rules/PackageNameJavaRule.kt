@@ -8,7 +8,7 @@ import java.io.File
 
 data class PackageNameRuleConfig(
     override val enabled: Boolean = true,
-    val patternRegex: Regex = "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)*\$^".toRegex()
+    val patternRegex: Regex = "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)*\$".toRegex()
 ) : RuleConfig
 
 class PackageNameJavaRule(config: PackageNameRuleConfig = PackageNameRuleConfig()) :
