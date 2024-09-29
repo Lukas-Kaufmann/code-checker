@@ -61,18 +61,20 @@ class FieldPatternJavaRule(config: FieldPatternRuleConfig = FieldPatternRuleConf
     ) : RuleConfig
 
     override fun visit(field: FieldDeclaration, violations: MutableList<Violation>) {
-        field.variables.forEach { variable ->
-            val name = variable.nameAsString
-            if (!name.matches(config.pattern.toRegex())) {
-                violations.add(
-                    Violation(
-                        Violation.Location(
-                            File(field.findCompilationUnit().get().storage.get().fileName),
-                            field.begin.get().line
-                        ),
-                        "Class variable '$name' does not follow Pattern: ${config.pattern}"
+        if (!field.isFinal) {
+            field.variables.forEach { variable ->
+                val name = variable.nameAsString
+                if (!name.matches(config.pattern.toRegex())) {
+                    violations.add(
+                        Violation(
+                            Violation.Location(
+                                File(field.findCompilationUnit().get().storage.get().fileName),
+                                field.begin.get().line
+                            ),
+                            "Class variable '$name' does not follow Pattern: ${config.pattern}"
+                        )
                     )
-                )
+                }
             }
         }
 
