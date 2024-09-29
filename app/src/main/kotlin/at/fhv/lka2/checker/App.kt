@@ -45,7 +45,6 @@ fun main(args: Array<String>) {
                 println("\t${violation.message} at ${violation.location.file.absolutePath}:${violation.location.line}")
             }
         }
-        //TODO html output
         exitProcess(1)
     }
 }
