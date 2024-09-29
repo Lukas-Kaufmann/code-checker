@@ -16,6 +16,40 @@ data class MethodNameConfig(
     val pattern: Regex = "[a-z][a-zA-Z]*".toRegex()
 ) : RuleConfig
 
+/**
+ * MethodNameJavaRule: Enforces a naming convention for Java method names.
+ *
+ * This rule ensures that Java method names follow a specified naming pattern, which is configurable through a regular expression. By default, method names must start with a lowercase letter and can be followed by any combination of uppercase or lowercase letters (e.g., `myMethod`).
+ *
+ * Configuration:
+ * - `pattern`: The regex pattern that method names must match (default: `[a-z][a-zA-Z]*`)
+ *
+ * Examples of compliant method names:
+ * - `myMethod`
+ * - `calculateTotal`
+ *
+ * Examples of non-compliant method names:
+ * - `MyMethod` (starts with an uppercase letter)
+ * - `calculate_total` (contains an underscore)
+ *
+ * Example of compliant code:
+ * ```java
+ * class Calculator {
+ *     public int calculateTotal(int a, int b) {
+ *         return a + b;
+ *     }
+ * }
+ * ```
+ *
+ * Example of non-compliant code:
+ * ```java
+ * class Calculator {
+ *     public int CalculateTotal(int a, int b) { // Violation: Method name starts with an uppercase letter.
+ *         return a + b;
+ *     }
+ * }
+ * ```
+ */
 class MethodNameJavaRule(config: MethodNameConfig = MethodNameConfig()) :
     JavaRule<MethodNameConfig>(config) {
 
@@ -40,6 +74,36 @@ data class FunctionNameRuleConfig(
     val pattern: Regex = "[a-z][a-zA-Z]*".toRegex()
 ) : RuleConfig
 
+/**
+ * FunctionNameCRule: Enforces a naming convention for C/C++ function names.
+ *
+ * This rule ensures that C/C++ function names follow a specified naming pattern, which is configurable through a regular expression. By default, function names must start with a lowercase letter and can be followed by any combination of uppercase or lowercase letters (e.g., `myFunction`).
+ *
+ * Configuration:
+ * - `pattern`: The regex pattern that function names must match (default: `[a-z][a-zA-Z]*`)
+ *
+ * Examples of compliant function names:
+ * - `myFunction`
+ * - `calculateTotal`
+ *
+ * Examples of non-compliant function names:
+ * - `MyFunction` (starts with an uppercase letter)
+ * - `calculate_total` (contains an underscore)
+ *
+ * Example of compliant code:
+ * ```cpp
+ * int calculateTotal(int a, int b) {
+ *     return a + b;
+ * }
+ * ```
+ *
+ * Example of non-compliant code:
+ * ```cpp
+ * int CalculateTotal(int a, int b) { // Violation: Function name starts with an uppercase letter.
+ *     return a + b;
+ * }
+ * ```
+ */
 class FunctionNameCRule(config: FunctionNameRuleConfig = FunctionNameRuleConfig()) :
     CRule<FunctionNameRuleConfig>(config) {
 

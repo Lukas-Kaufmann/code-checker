@@ -14,6 +14,41 @@ data class SwitchFormatRuleConfig(override val enabled: Boolean = true) : RuleCo
 
 private val switchPattern = "switch (\\S.*\\S) \\{(.|\\n)*\\}".toRegex()
 
+/**
+ * SwitchFormatJavaRule: Enforces formatting standards for switch statements in Java source files.
+ *
+ * This rule checks that the formatting of switch statements adheres to a specific pattern.
+ * A valid switch statement must follow the format:
+ *
+ * ```java
+ * switch (expression) {
+ *     // case statements
+ * }
+ * ```
+ *
+ * Configuration:
+ * - `enabled`: Whether this rule is active (default: true)
+ *
+ * Examples of compliant switch statements:
+ * ```java
+ * switch (value) {
+ *     case 1:
+ *         System.out.println("One");
+ *         break;
+ *     case 2:
+ *         System.out.println("Two");
+ *         break;
+ * }
+ * ```
+ *
+ * Examples of non-compliant switch statements:
+ * ```java
+ * switch(value) { // Violation: Missing space after "switch" and around parentheses
+ *     case 1:
+ *         System.out.println("One");
+ * }
+ * ```
+ */
 class SwitchFormatJavaRule(config: SwitchFormatRuleConfig = SwitchFormatRuleConfig()) :
     JavaRule<SwitchFormatRuleConfig>(config) {
 
@@ -31,6 +66,41 @@ class SwitchFormatJavaRule(config: SwitchFormatRuleConfig = SwitchFormatRuleConf
     }
 }
 
+/**
+ * SwitchFormatCRule: Enforces formatting standards for switch statements in C source files.
+ *
+ * This rule checks that the formatting of switch statements adheres to a specific pattern.
+ * A valid switch statement must follow the format:
+ *
+ * ```c
+ * switch (expression) {
+ *     // case statements
+ * }
+ * ```
+ *
+ * Configuration:
+ * - `enabled`: Whether this rule is active (default: true)
+ *
+ * Examples of compliant switch statements:
+ * ```c
+ * switch (value) {
+ *     case 1:
+ *         printf("One\n");
+ *         break;
+ *     case 2:
+ *         printf("Two\n");
+ *         break;
+ * }
+ * ```
+ *
+ * Examples of non-compliant switch statements:
+ * ```c
+ * switch(value) { // Violation: Missing space after "switch" and around parentheses
+ *     case 1:
+ *         printf("One\n");
+ * }
+ * ```
+ */
 class SwitchFormatCRule(config: SwitchFormatRuleConfig = SwitchFormatRuleConfig()): CRule<SwitchFormatRuleConfig>(config) {
     override fun visit(statement: IASTStatement?): Int {
         if (statement is IASTSwitchStatement) {

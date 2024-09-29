@@ -14,6 +14,38 @@ data class ForFormatRuleConfig(override val enabled: Boolean = true) : RuleConfi
 
 private val forPattern = "for \\(\\S.*; .*; .*\\) \\{(.|\\n)*\\}".toRegex()
 
+/**
+ * ForFormatJavaRule: Enforces a specific format for `for` loops in Java code.
+ *
+ * This rule checks if the format of `for` statements in Java code follows a predefined pattern. By default, the rule expects
+ * `for` loops to match the following regular expression: `for \\(\\S.*; .*; .*\\) \\{(.|\\n)*\\}`.
+ * The pattern ensures:
+ * - Proper spacing and structure within the parentheses
+ * - The body of the `for` loop is enclosed with curly braces
+ *
+ * The purpose of this rule is to:
+ * - Promote readability by enforcing a consistent structure for `for` loops
+ * - Prevent poorly formatted or difficult-to-read `for` loops in the codebase
+ *
+ * Configuration:
+ * - No configurable properties beyond enabling or disabling the rule (default: enabled)
+ *
+ * Example of a compliant `for` loop:
+ * ```java
+ * for (int i = 0; i < 10; i++) {
+ *     System.out.println(i);
+ * }
+ * ```
+ *
+ * Example of a non-compliant `for` loop:
+ * ```java
+ * for(int i=0;i<10;i++) { System.out.println(i); }
+ * // Violation: Invalid format for for statement
+ * ```
+ *
+ * Refactoring tip for violations:
+ * Ensure proper formatting for the `for` loop by adding appropriate spaces within the parentheses and
+ */
 class ForFormatJavaRule(config: ForFormatRuleConfig = ForFormatRuleConfig()) : JavaRule<ForFormatRuleConfig>(config) {
 
     override fun visit(forStatement: ForStmt, arg: MutableList<Violation>) {
@@ -31,6 +63,41 @@ class ForFormatJavaRule(config: ForFormatRuleConfig = ForFormatRuleConfig()) : J
     }
 }
 
+
+/**
+ * ForFormatCRule: Enforces a specific format for `for` loops in C/C++ code.
+ *
+ * This rule checks if the format of `for` statements in C/C++ code conforms to a predefined pattern. Similar to its Java counterpart,
+ * the rule expects the `for` loops to match the following regular expression: `for \\(\\S.*; .*; .*\\) \\{(.|\\n)*\\}`.
+ * The pattern ensures:
+ * - Proper structure of the `for` loop header
+ * - The loop body is enclosed within curly braces
+ *
+ * The purpose of this rule is to:
+ * - Promote uniform and readable code through consistent formatting of `for` loops
+ * - Prevent poorly formatted `for` statements in the C/C++ codebase
+ *
+ * Configuration:
+ * - No configurable properties beyond enabling or disabling the rule (default: enabled)
+ *
+ * Example of a compliant `for` loop:
+ * ```c
+ * for (int i = 0; i < 10; i++) {
+ *     printf("%d\n", i);
+ * }
+ * ```
+ *
+ * Example of a non-compliant `for` loop:
+ * ```c
+ * for(int i=0;i<10;i++) { printf("%d\n", i); }
+ * // Violation: Invalid format for for statement
+ * ```
+ *
+ * Refactoring tip for violations:
+ * Ensure proper formatting of the `for` loop header and body. Add appropriate spaces and structure the loop body for readability.
+ *
+ * @property config The [ForFormatRuleConfig] for this rule
+ */
 class ForFormatCRule(config: ForFormatRuleConfig = ForFormatRuleConfig()) : CRule<ForFormatRuleConfig>(config) {
 
     override fun visit(statement: IASTStatement): Int {

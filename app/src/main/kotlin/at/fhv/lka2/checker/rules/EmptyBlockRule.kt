@@ -12,6 +12,34 @@ data class EmptyBlockRuleConfig(
 
 private val emptyBracketed = "\\{\\s*\\}".toRegex()
 
+/**
+ * EmptyBlockJavaRule: Detects and flags empty code blocks.
+ *
+ * This rule scans the code for empty blocks (i.e., `{}`), which typically indicate incomplete or unnecessary code.
+ * Empty blocks can reduce code clarity and suggest unfinished implementation. This rule helps identify and remove
+ * such blocks to maintain clean and concise code.
+ *
+ * The purpose of this rule is to:
+ * - Prevent the use of empty blocks that might confuse other developers or suggest incomplete functionality
+ * - Encourage the removal or proper handling of empty code blocks
+ *
+ * Configuration:
+ * - No configurable properties beyond enabling or disabling the rule (default: enabled)
+ *
+ * Example of a violation:
+ * ```
+ * public class User {
+ *     public void process() {
+ *         // Empty block
+ *     }
+ * }
+ * // Violation: Empty block '{}' detected.
+ * ```
+ *
+ * Refactoring tip for violations:
+ * If the block is not needed, consider removing it entirely. If it is part of incomplete functionality,
+ * ensure to add the required implementation or comments indicating its purpose.
+ */
 class EmptyBlockJavaRule(config: EmptyBlockRuleConfig = EmptyBlockRuleConfig()) :
     JavaRule<EmptyBlockRuleConfig>(config) {
 

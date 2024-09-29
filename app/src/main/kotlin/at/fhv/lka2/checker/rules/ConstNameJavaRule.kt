@@ -14,6 +14,40 @@ data class ConstNameJavaRuleConfig(
     val pattern: Regex = "[A-Z][A-Z_]*".toRegex()
 ) : RuleConfig
 
+/**
+ * ConstNameJavaRule: Enforces naming conventions for constant variables.
+ *
+ * This rule checks whether the names of `final` fields and variables follow a specified pattern, typically used for constants.
+ * By default, it expects constant names to be in uppercase with words separated by underscores, such as `MY_CONSTANT`.
+ *
+ * The purpose of this rule is to:
+ * - Encourage consistent naming of constants in code
+ * - Improve readability by distinguishing constants from other variables
+ * - Adhere to common coding standards across the codebase
+ *
+ * Configuration:
+ * - pattern: The naming pattern for constant names (default: uppercase letters with optional underscores)
+ *
+ * Example of a compliant constant name:
+ * ```
+ * public static final int MAX_LIMIT = 100;
+ * ```
+ *
+ * Example of a non-compliant constant name:
+ * ```
+ * public static final int maxLimit = 100;
+ * // Violation: Constant name does not follow the pattern
+ * ```
+ *
+ * Refactoring tip for violations:
+ * Ensure that constant names are in uppercase with optional underscores to separate words. Rename variables that violate this convention.
+ * For example:
+ * ```
+ * public static final int maxLimit = 100;
+ * // Refactor to:
+ * public static final int MAX_LIMIT = 100;
+ * ```
+ */
 class ConstNameJavaRule(config: ConstNameJavaRuleConfig = ConstNameJavaRuleConfig()) :
     JavaRule<ConstNameJavaRuleConfig>(config) {
 

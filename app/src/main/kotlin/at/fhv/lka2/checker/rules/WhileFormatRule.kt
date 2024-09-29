@@ -14,6 +14,18 @@ data class WhileFormatRuleConfig(override val enabled: Boolean = true) : RuleCon
 
 private val whilePattern = "while \\(\\S.*\\S\\) \\{(.|\\n)*\\}".toRegex()
 
+/**
+ * WhileFormatJavaRule: Enforces proper formatting of while statements in Java source files.
+ *
+ * This rule checks that the while statements follow a specific format:
+ * - The structure should be: `while (condition) { ... }`
+ * - There should be no extra spaces in the parentheses or braces.
+ *
+ * The regex pattern used for validation is: `while \\(\\S.*\\S\\) \\{(.|\\n)*\\}`.
+ *
+ * Violations are reported when the actual formatting of a while statement does not conform
+ * to this pattern.
+ */
 class WhileFormatJavaRule(config: WhileFormatRuleConfig = WhileFormatRuleConfig()) :
     JavaRule<WhileFormatRuleConfig>(config) {
 
@@ -31,6 +43,17 @@ class WhileFormatJavaRule(config: WhileFormatRuleConfig = WhileFormatRuleConfig(
     }
 }
 
+/**
+ * WhileFormatCRule: Enforces proper formatting of while statements in C/C++ source files.
+ *
+ * This rule checks that while statements adhere to the required format:
+ * - The expected structure is: `while (condition) { ... }`
+ * - Formatting should not have any unnecessary spaces in the parentheses or braces.
+ *
+ * The regex pattern used for validation is: `while \\(\\S.*\\S\\) \\{(.|\\n)*\\}`.
+ *
+ * Violations are reported for any while statement that does not match the expected format.
+ */
 class WhileFormatCRule(config: WhileFormatRuleConfig = WhileFormatRuleConfig()) : CRule<WhileFormatRuleConfig>(config) {
 
     override fun visit(statement: IASTStatement?): Int {
