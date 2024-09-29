@@ -44,6 +44,8 @@ java {
     }
 }
 
+application.applicationName = "code-checker"
+
 application {
     mainClass = "at.fhv.lka2.checker.AppKt"
 }
